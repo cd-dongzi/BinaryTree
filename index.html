@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script src="binaryTree.js"></script>
+<script>
+    var arr = [8, 13,3,7,19,21,15];
+    var tree = new BinaryTree(arr);
+    tree.init();
+    console.log('--------初始化-----------')
+    console.log(tree)
+
+    console.log('---------前序遍历----------')
+    tree.preorderTraversal(function(node){
+        console.log(node.key)
+    })
+    console.log('---------中序遍历----------')
+    tree.orderTraversal(function(node){
+        console.log(node.key)
+    })
+    console.log('--------后序遍历-----------')
+
+    tree.postorderTraversal(function(node){
+        console.log(node.key)
+    })
+
+    console.log('--------查找最小值---------')
+    console.log(tree.min())
+
+    console.log('--------查找最大值---------')
+    console.log(tree.max())
+
+
+    console.log('------删除值为 19的节点---------')
+    tree.removeNode(19)
+    console.log(tree)
+</script>

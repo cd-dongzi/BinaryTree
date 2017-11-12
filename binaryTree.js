@@ -1,20 +1,18 @@
-//最近看到二叉树算法, 作为一名小白便去了解以下二叉树的是什么东西 
-// 实现二叉排序树
 function BinaryTree (arr) {
     if (Object.prototype.toString.call(arr).slice(8, -1) !== 'Array') {
         throw new TypeError('只接受一个数组作为参数')
     }
-
     this.root = null; //根节点
     this.arr = arr || []; //接受传入的参数-数组
-
+    
+    
     //初始化每个树节点
     var TreeNode = function (key) {
         this.key = key; //当前节点的值
         this.left = null; //左子树
         this.right = null; //右子树
     }
-
+    
     //构建二叉树
     this.init = function () {
         if (!this.arr) {
@@ -51,27 +49,23 @@ function BinaryTree (arr) {
         }
     }
 
-    /* 
-        前序遍历：根节点->左子树->右子树
-        中序遍历：左子树->根节点->右子树
-        后序遍历：左子树->右子树->根节点
-    */
 
-    //返回排序的结果
-    this.sort = function (type) {
-        var arr = [];
-        var pushEle = function (ele) {
-            arr.push(ele.key)
+    //前序遍历
+    this.preorderTraversal = function (callback) {
+        if (this.root === null) {   //传入根节点
+            console.warn('请先初始化二叉排序树');
+            return;
         }
-        if (type*1 < 0) {
-            this.reverseorderTraversal(pushEle);
-        }else{
-            this.orderTraversal(pushEle);
+        var fn = function (node, callback) {
+            if (node !== null) {  //当前节点不等于空的时候,先遍历自身节点, 再遍历左子树节点, 最后遍历右子树节点
+               callback(node); //自身
+               fn(node.left, callback); //左子树
+               fn(node.right, callback) //右子树
+            }
         }
-        return arr
+        fn(this.root, callback)
     }
 
-    
 
     //中序遍历
     this.orderTraversal = function (callback) { //从小到大
@@ -90,40 +84,8 @@ function BinaryTree (arr) {
         fn(this.root, callback)
     }
 
-    //中序遍历的逆序
-    this.reverseorderTraversal = function (callback) { //从大到小
-        if (this.root === null) {
-            console.warn('请先初始化二叉排序树');
-            return;
-        }
-        var fn = function (node, callback) {
-            if (node !== null) {
-               fn(node.right, callback) 
-               callback(node);
-               fn(node.left, callback);
-            }
-        }
-        fn(this.root, callback)
-    }
-
-    //前序遍历
-    this.preorderTraversal = function (callback) {
-        if (this.root === null) {   //传入根节点
-            console.warn('请先初始化二叉排序树');
-            return;
-        }
-        var fn = function (node, callback) {
-            if (node !== null) {  //当前节点不等于空的时候,先遍历自身节点, 再遍历左子树节点, 最后遍历右子树节点
-               callback(node); //自身
-               fn(node.left, callback); //左子树
-               fn(node.right, callback) //右子树
-            }
-        }
-        fn(this.root, callback)
-    }
-
-    //后序遍历
-    this.postorderTraversal = function (callback) {
+     //后序遍历
+     this.postorderTraversal = function (callback) {
         if (this.root === null) {  //传入根节点
             console.warn('Please initialize first');
             return;
@@ -138,18 +100,16 @@ function BinaryTree (arr) {
         fn(this.root, callback)
     }
 
-
-    //查找最小值
     this.min = function () {  //查找最小值就一直往左边查找就行了,直到左边没有节点为止,那就证明已经到最小值了
         var fn = function (node) {
             if (node == null) {  //传入根节点
                 console.warn('请先初始化二叉排序树');
-                return null
+                return null;
             }
             if (node.left) { //查找当前左子树有没有节点, 有点话继续递归查找该左节点存不存在左节点
-                return fn(node.left)
+                return fn(node.left);
             }else{ //直到当前节点不在存在左节点,证明取到最小值了
-                return node
+                return node;
             }
         }
         return fn(this.root)   
@@ -160,27 +120,26 @@ function BinaryTree (arr) {
         var fn = function (node) {
             if (node == null) {  //传入根节点
                 console.warn('请先初始化二叉排序树');
-                return null
+                return null;
             }
             if (node.right) { 
-                return fn(node.right)
+                return fn(node.right);
             }else{
-                return node
+                return node;
             }
         }
         return fn(this.root) 
     }
 
-
-    //删除节点
-    this.remove = function (key) {
+     //删除节点
+     this.removeNode = function (key) {
         var fn = function (node, key) {
             if (node === null) {  //传入初始节点
                 console.warn('请先初始化二叉排序树');
                 return null;
             }
             if (node.key > key) { //初始节点的值大于我要删除节点的值, 说明我要删除的节点在初始节点的左边
-                node.left = fn(node.left, key) //递归一直寻找左边的子节点,直到找盗null 为止
+                node.left = fn(node.left, key) //递归一直寻找左边的子节点,直到找到null 为止
                 return node;
             }else if (node.key < key) {//初始节点的值小于我要删除节点的值, 说明我要删除的节点在初始节点的右边
                 node.right = fn(node.right, key);
@@ -228,5 +187,4 @@ function BinaryTree (arr) {
         }
         fn(this.root, key)
     }
-
-}
+}  
